@@ -1,8 +1,24 @@
 #!/usr/bin/env python3
+import logging
+from typing import List
+
 import discord
 
 
-def bot(token: str) -> None:
+def bot(token: str, debug: bool = False) -> None:
+    logging_handlers: List[logging.Handler] = []
+    try:
+        from rich.logging import RichHandler
+    except ImportError:
+        logging_handlers.append(logging.StreamHandler())
+    else:
+        logging_handlers.append(RichHandler(rich_tracebacks=True))
+
+    logging.basicConfig(
+        level=logging.DEBUG if debug else logging.INFO,
+        format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+        handlers=logging_handlers,
+    )
 
     bot = discord.Bot()
 
