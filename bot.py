@@ -22,14 +22,11 @@ def bot(token: str, debug: bool = False) -> None:
 
     bot = discord.Bot()
 
-    @bot.slash_command()
-    async def hello(ctx, name: str = None):
-        name = name or ctx.author.name
-        await ctx.respond(f"Hello {name}!")
-
-    @bot.user_command(name="Say Hello")
-    async def hi(ctx, user):
-        await ctx.respond(f"{ctx.author.mention} says hello to {user.name}!")
+    @bot.slash_command(description="Invite link for this bot")
+    async def invite(ctx: discord.ApplicationContext, useless: str = "") -> None:
+        await ctx.respond(
+            f"https://discord.com/api/oauth2/authorize?client_id={bot.application_id}&permissions=2147551232&scope=applications.commands%20bot"
+        )
 
     bot.run(token)
 
