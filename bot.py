@@ -3,6 +3,8 @@ import logging
 from typing import List
 
 import discord
+import discord.utils as utils
+import discord.permissions as permissions
 
 
 def bot(token: str, debug: bool = False) -> None:
@@ -25,7 +27,11 @@ def bot(token: str, debug: bool = False) -> None:
     @bot.slash_command(description="Invite link for this bot")
     async def invite(ctx: discord.ApplicationContext, useless: str = "") -> None:
         await ctx.respond(
-            f"https://discord.com/api/oauth2/authorize?client_id={bot.application_id}&permissions=2147551232&scope=applications.commands%20bot"
+            utils.oauth_url(
+                client_id=bot.application_id,
+                permissions=permissions.Permissions(2147551232),
+                scopes=["applications.commands", "bot"],
+            )
         )
 
     bot.run(token)
